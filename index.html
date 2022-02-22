@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet"> 
+    </head>
+    <body>
+        <div id="game-title">Daily Chaindle</div>
+        <div class="popups">
+            <div class="popup hidden" id="statistics-popup">
+                <button class="close-button" onclick="closePopup('statistics-popup')">x</button>
+                <div class="popup-message">
+                    <h1>Statistics</h1>
+                    <h2 id="game-over-chain-label">You scored a chain of length {}</h2>
+                    <button onclick="playFree()">Play Freeplay</button>
+                </div>
+            </div>
+            <div class="popup hidden" id="tutorial-popup">
+                <button class="close-button" onclick="closePopup('tutorial-popup')">x</button>
+                <div class="popup-message">
+                    <h1>Welcome to Chaindle!</h1>
+                    <h2>Like an infinite hard mode wordle, but every time you solve:</h2>
+                    <ul>
+                        <li>A new solution is selected</li>
+                        <li>You gain 3 more guesses</li>
+                        <li>The previous solution is used as your starting word</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="message-popup hidden" id="message"></div>
+        </div>
+        <game-board>
+            <div class="board">
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+                <game-row><div class="row">
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                    <game-tile><div class="tile"></div></game-tile>
+                </div></game-row>
+            </div>
+        </game-board>
+        <game-keyboard>
+            <div class="keyboard-spacer"></div>
+            <div class="row">
+                <button class="game-key" onclick="letterEntry('q')">q</button>
+                <button class="game-key" onclick="letterEntry('w')">w</button>
+                <button class="game-key" onclick="letterEntry('e')">e</button>
+                <button class="game-key" onclick="letterEntry('r')">r</button>
+                <button class="game-key" onclick="letterEntry('t')">t</button>
+                <button class="game-key" onclick="letterEntry('y')">y</button>
+                <button class="game-key" onclick="letterEntry('u')">u</button>
+                <button class="game-key" onclick="letterEntry('i')">i</button>
+                <button class="game-key" onclick="letterEntry('o')">o</button>
+                <button class="game-key" onclick="letterEntry('p')">p</button>
+            </div>
+            <div class="row">
+                <div class="keyboard-buffer"></div>
+                <button class="game-key" onclick="letterEntry('a')">a</button>
+                <button class="game-key" onclick="letterEntry('s')">s</button>
+                <button class="game-key" onclick="letterEntry('d')">d</button>
+                <button class="game-key" onclick="letterEntry('f')">f</button>
+                <button class="game-key" onclick="letterEntry('g')">g</button>
+                <button class="game-key" onclick="letterEntry('h')">h</button>
+                <button class="game-key" onclick="letterEntry('j')">j</button>
+                <button class="game-key" onclick="letterEntry('k')">k</button>
+                <button class="game-key" onclick="letterEntry('l')">l</button>
+                <div class="keyboard-buffer"></div>
+            </div>
+            <div class="row">
+                <button class="game-large-key" onclick="trySubmit()">Enter</button>
+                <button class="game-key" onclick="letterEntry('s')">z</button>
+                <button class="game-key" onclick="letterEntry('d')">x</button>
+                <button class="game-key" onclick="letterEntry('f')">c</button>
+                <button class="game-key" onclick="letterEntry('g')">v</button>
+                <button class="game-key" onclick="letterEntry('h')">b</button>
+                <button class="game-key" onclick="letterEntry('j')">n</button>
+                <button class="game-key" onclick="letterEntry('k')">m</button>
+                <button class="game-large-key" onclick="backspace()">Back</button>
+            </div>
+        </game-keyboard>
+        <div class="daily-bar">
+            <div class="sidebar-title">Daily</div>
+
+            New chains every day at midnight!
+
+            <div class="stats-section">
+                <h1>Stats</h1>
+                <div class="stats-container">
+                    <div id="daily-best-chain">Best Chain: {}</div>
+                    <div id="daily-games-played">Games Played: {}</div>
+                </div>
+            </div>
+            <!--<div id="previous-chains">
+                Previous Chains:
+                <div id="daily-chain-chart"></div>
+            </div>-->
+            
+        </div>
+        <div class="freeplay-bar">
+            <div class="sidebar-title">Freeplay</div>
+
+            <div class="sidebar-info">
+                <label for="freeplay-seed-input">Freeplay Seed:</label>
+                <input name="freeplay-seed-input" type="text" id="freeplay-seed-input">
+                <button onclick="playFree()">Play Free</button>
+            </div>
+
+            <div class="stats-section">
+                <h1>Stats</h1>
+                <div class="stats-container">
+                <div id="freeplay-best-chain">Best Chain: {}</div>
+                <div id="freeplay-games-played">Games Played: {}</div>
+            </div>
+        </div>
+    </body>
+    <script src="seedrandom.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    <script src="game.js"></script>
+</html>
