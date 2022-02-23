@@ -54,7 +54,7 @@ function keyDown(e) {
         }
     
         if (e.code == "Enter") {
-            trySubmit()
+            playerTrySubmit()
         }
     }
 }
@@ -69,6 +69,14 @@ function letterEntry(letter) {
 function backspace(){
     current_entry = current_entry.slice(0, -1);
     updateRow();
+}
+
+function playerTrySubmit() {
+    trySubmit();
+    gtag("event", "guess_submitted", {
+        event_category: "game",
+        event_label: mode
+    })
 }
 
 function trySubmit() {
@@ -212,11 +220,10 @@ function gameOver() {
     $("#game-over-popup").removeClass("hidden");
     $("#game-over-chain-label").text(`You scored a chain of ${chains_completed}`);
 
-    ga("send", "event", {
-        eventCategory: "game",
-        eventAction: "end-game",
-        eventLabel: mode,
-        eventValue: chains_completed
+    gtag("event", "game_end", {
+        event_category: "game",
+        event_label: mode,
+        event_value: chains_completed
     });
 }
 
@@ -291,10 +298,9 @@ function startGame() {
     }
     nextSolution();
 
-    ga("send", "event", {
-        eventCategory: "game",
-        eventAction: "start-game",
-        eventLabel: mode
+    gtag("event", "start_game", {
+        event_category: "game",
+        event_label: mode
     });
 }
 
