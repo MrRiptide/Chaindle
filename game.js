@@ -211,6 +211,13 @@ function gameOver() {
 
     $("#game-over-popup").removeClass("hidden");
     $("#game-over-chain-label").text(`You scored a chain of ${chains_completed}`);
+
+    ga("send", "event", {
+        eventCategory: "game",
+        eventAction: "end-game",
+        eventLabel: mode,
+        eventValue: chains_completed
+    });
 }
 
 function updateStatistics() {
@@ -283,6 +290,12 @@ function startGame() {
         addGuess();
     }
     nextSolution();
+
+    ga("send", "event", {
+        eventCategory: "game",
+        eventAction: "start-game",
+        eventLabel: mode
+    });
 }
 
 // code to run on load
