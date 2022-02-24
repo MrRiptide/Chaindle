@@ -7,9 +7,11 @@ var solution = "invalid";
 var required_letters = [];
 var current_entry = "";
 var guess_count = 0;
+var guesses_for_solution = 0;
 var chains_completed = 0;
 var max_guesses = 6;
 var previous_guesses = "";
+var is_loading = false;
 
 var mode = "daily";
 
@@ -23,6 +25,7 @@ function getRandomInt(min, max) {
 function nextSolution(){
     solution = solutions[getRandomInt(0, solutions.length)];
     required_letters = []
+    guesses_for_solution = 0;
 
     clearKeyboard();
 }
@@ -73,10 +76,10 @@ function backspace(){
 
 function playerTrySubmit() {
     trySubmit();
-    gtag("event", "guess_submitted", {
+    /*gtag("event", "guess_submitted", {
         event_category: "game",
         event_label: mode
-    })
+    })*/
 }
 
 function trySubmit() {
@@ -105,7 +108,7 @@ function guess() {
         "missing",
         "missing",
         "missing"];
-    if (current_entry.toLowerCase() != solution.toLowerCase()) {
+    if (!is_loading && current_entry.toLowerCase() != solution.toLowerCase()) {
         previous_guesses += current_entry.toLowerCase();
     }
     var number_correct = 0;
@@ -138,6 +141,11 @@ function guess() {
 
     current_entry = "";
     guess_count += 1;
+    guesses_for_solution += 1;
+
+    if (mode == "daily") {
+        saveGame();
+    }
 
     if (number_correct == 5) {
         gotCorrect();
@@ -178,6 +186,13 @@ function gotCorrect(){
 
     $(`game-row:nth-child(${guess_count})`).addClass("solved")
     current_entry = solution;
+    if (!is_loading){
+        gtag("event", "solution_found", {
+            event_category: "game",
+            event_label: mode,
+            event_value: guesses_for_solution
+        });
+    }
     nextSolution();
     updateRow();
     trySubmit();
@@ -220,11 +235,13 @@ function gameOver() {
     $("#game-over-popup").removeClass("hidden");
     $("#game-over-chain-label").text(`You scored a chain of ${chains_completed}`);
 
-    gtag("event", "game_end", {
-        event_category: "game",
-        event_label: mode,
-        event_value: chains_completed
-    });
+    if (!is_loading){
+        gtag("event", "game_end", {
+            event_category: "game",
+            event_label: mode,
+            event_value: chains_completed
+        });
+    }
 }
 
 function updateStatistics() {
@@ -254,23 +271,28 @@ function saveStatistics() {
 }
 
 function saveGame() {
-    if (mode == "daily"){
+    if (mode == "daily" && !is_loading){
         window.localStorage.setItem("lastDayPlayed", today);
-        window.localStorage.setItem("savedDailyGame", previous_guesses+current_entry);
+        window.localStorage.setItem("savedDailyGame", previous_guesses+"."+current_entry);
     }
 }
 
 function loadSavedGame() {
     if (window.localStorage.getItem("lastDayPlayed") == today){
+        is_loading = true;
         var saved_game = window.localStorage.getItem("savedDailyGame");
-        for (var i = 0; i < saved_game.length; i++){
+        previous_guesses = saved_game.split(".")[0];
+        for (var i = 0; i < previous_guesses.length; i++){
             current_entry += saved_game[i];
             if (current_entry.length == 5) {
                 updateRow();
                 trySubmit();
             }
         }
+        current_entry = saved_game.split(".")[1];
+        current_entry = current_entry === undefined ? "" : current_entry;
         updateRow();
+        is_loading = false;
     }
 }
 
