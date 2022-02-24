@@ -21,11 +21,10 @@
         <div id="game-title">Daily Chaindle</div>
         <div class="popups">
             <div class="popup hidden" id="statistics-popup">
-                <button class="close-button" onclick="closePopup('statistics-popup')">x</button>
+                <button class="close-button" onclick="closePopup('game-over-popup')">x</button>
                 <div class="popup-message">
-                    <h1>Statistics</h1>
+                    <h1>Chain Broken</h1>
                     <h2 id="game-over-chain-label">You scored a chain of length {}</h2>
-                    <button onclick="playFree()">Play Freeplay</button>
                 </div>
             </div>
             <div class="popup" id="tutorial-popup">
@@ -162,7 +161,7 @@
             </div>
         </div>
     </body>
-    <script src="seedrandom.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
     <script src="game.js"></script>
 </html>

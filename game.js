@@ -12,6 +12,7 @@ var chains_completed = 0;
 var max_guesses = 6;
 var previous_guesses = "";
 var is_loading = false;
+var rng;
 
 var mode = "daily";
 
@@ -20,7 +21,7 @@ var statistics = {};
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(rng() * (max - min) + min);
   }
 function nextSolution(){
     solution = solutions[getRandomInt(0, solutions.length)];
@@ -300,9 +301,9 @@ function playFree() {
     $("#game-title").text("Free Chaindle")
     var seed = $("#freeplay-seed-input")[0].value;
     if (seed != ""){
-        Math.seedrandom(seed);
+        rng = new Math.seedrandom(seed);
     } else {
-        Math.seedrandom();
+        rng = new Math.seedrandom();
     }
     mode = "freeplay";
     startGame();
@@ -334,9 +335,13 @@ var mm = String(today.getMonth() + 1).padStart(2, '0');
 var yyyy = today.getFullYear();
 today = mm + '/' + dd + '/' + yyyy;
 
-Math.seedrandom(today)
+rng = new Math.seedrandom(today)
 
 loadStatistics();
 updateStatistics();
 startGame();
 loadSavedGame();
+
+if (localStorage.getItem("seen_tutorial") !== null){
+    closePopup("tutorial-popup");
+}
