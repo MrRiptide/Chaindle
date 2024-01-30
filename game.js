@@ -187,13 +187,13 @@ function gotCorrect(){
 
     $(`game-row:nth-child(${guess_count})`).addClass("solved")
     current_entry = solution;
-    if (!is_loading){
+    /*if (!is_loading){
         gtag("event", "solution_found", {
             event_category: "game",
             event_label: mode,
             event_value: guesses_for_solution
         });
-    }
+    }*/
     nextSolution();
     updateRow();
     trySubmit();
@@ -236,13 +236,13 @@ function gameOver() {
     $("#game-over-popup").removeClass("hidden");
     $("#game-over-chain-label").text(`You scored a chain of ${chains_completed}`);
 
-    if (!is_loading){
+    /*if (!is_loading){
         gtag("event", "game_end", {
             event_category: "game",
             event_label: mode,
             event_value: chains_completed
         });
-    }
+    }*/
 }
 
 function updateStatistics() {
@@ -321,10 +321,10 @@ function startGame() {
     }
     nextSolution();
 
-    gtag("event", "start_game", {
+    /*gtag("event", "start_game", {
         event_category: "game",
         event_label: mode
-    });
+    });*/
 }
 
 // code to run on load
